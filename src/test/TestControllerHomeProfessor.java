@@ -22,7 +22,6 @@ import java.util.List;
 class TestControllerHomeProfessor {
 
     private static final String geo = "Geografia";
-    private Argument arg = new Argument(9999, "test selenium", geo, "4B", 10);
     private int matricola = 1234;
     private Date d = new Date();
     private Grades g = new Grades(1234, "Matematica", 8, "orale", 9999, "Macchina", d);
@@ -57,7 +56,7 @@ class TestControllerHomeProfessor {
 
 
     @Test
-    void saveArg() throws Exception {
+    void saveArg() throws SQLException {
 
 
         Statement stmt = mycreateStatement();
@@ -70,7 +69,7 @@ class TestControllerHomeProfessor {
      void validateProfessor() throws ToastException {
 
         Professor p;
-        ProfessorBean pb = null;
+
 
         try {
             p = ProfessorDao.validate(9999,"pass");
@@ -206,7 +205,7 @@ class TestControllerHomeProfessor {
     }
 
     @Test
-    void deleteAbsence() throws Exception {
+    void deleteAbsence()  {
 
         int dayIndex = 10;
         int monthIndex = 2;
