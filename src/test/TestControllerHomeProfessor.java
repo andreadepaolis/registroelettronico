@@ -1,6 +1,5 @@
 package test;
 
-import bean.ProfessorBean;
 import bean.StudentBean;
 import database.ProfessorDao;
 import database.StudentDao;
@@ -21,19 +20,19 @@ import java.util.List;
 
 class TestControllerHomeProfessor {
 
-    private static final String geo = "Geografia";
+    private static final String GEO = "Geografia";
     private int matricola = 1234;
     private Date d = new Date();
     private Grades g = new Grades(1234, "Matematica", 8, "orale", 9999, "Macchina", d);
-    private Homework hmw = new Homework(9999, "3B", geo, "Compito 1", d);
+    private Homework hmw = new Homework(9999, "3B", GEO, "Compito 1", d);
     private Absences a = new Absences(1234, "Assenza", d, 0);
     private String classe = "3B";
-    private String materia = geo;
+    private String materia = GEO;
     private static final String ERR = "Error";
     private MonthFactory mf = new MonthFactory();
 
 
-    private Statement mycreateStatement() throws SQLException {
+    private Connection myCreateConnection() throws SQLException {
         Statement stmt = null;
         try {
             String driver = "com.mysql.jdbc.Driver";
@@ -44,25 +43,27 @@ class TestControllerHomeProfessor {
             String url = "jdbc:mysql://localhost:3306/project12?serverTimezone=Europe/Rome";
             Connection con = DriverManager.getConnection(url, userName, password);
 
-            stmt =  con.createStatement();
+            return con;
         } catch (Exception e) {
             return null;
-        }finally {
-
-            stmt.close();
         }
-        return null;
     }
 
 
     @Test
     void saveArg() throws SQLException {
 
+        try {
 
-        Statement stmt = mycreateStatement();
+            Connection con = myCreateConnection();
+            assert con != null;
+            Statement stmt = con.createStatement();
 
-        int result = ProfessorQuery.saveNewArg(stmt, 9999, "4B", "test slemium", geo, 11);
-        Assertions.assertTrue(result > 0);
+            int result = ProfessorQuery.saveNewArg(stmt, 9999, "4B", "test slemium", GEO, 11);
+            Assertions.assertTrue(result > 0);
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
     }
 
     @Test
@@ -133,8 +134,9 @@ class TestControllerHomeProfessor {
     public void save() throws ToastException {
         int result = 0;
         try {
-            Statement stmt = mycreateStatement();
-            result = ProfessorQuery.saveNewGrades(stmt, g);
+            Connection con = myCreateConnection();
+            assert con != null;
+            Statement stmt = con.createStatement();            result = ProfessorQuery.saveNewGrades(stmt, g);
         } catch ( SQLException e) {
             throw new ToastException(ERR, e.getMessage());
         }
@@ -145,7 +147,9 @@ class TestControllerHomeProfessor {
     public void removehmw() throws ToastException {
         int result = 0;
         try {
-            Statement stmt = mycreateStatement();
+            Connection con = myCreateConnection();
+            assert con != null;
+            Statement stmt = con.createStatement();
             result = ProfessorQuery.deleteHomework(stmt, hmw.getDescription());
 
         } catch (SQLException e) {
@@ -160,7 +164,9 @@ class TestControllerHomeProfessor {
     public void saveAbsence() throws ToastException{
         int result = 0;
         try{
-            Statement stmt = mycreateStatement();
+            Connection con = myCreateConnection();
+            assert con != null;
+            Statement stmt = con.createStatement();
             result = ProfessorQuery.saveNewAbsences(stmt, a);
 
         } catch (SQLException e) {
