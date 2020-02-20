@@ -97,25 +97,25 @@ class TestControllerHomeProfessor {
             assert allUserForClass != null;
             for (Student s : allUserForClass) {
                 StudentBean sb = new StudentBean();
-                sb.setLastname(s.getLastname());
                 sb.setName(s.getName());
-                sb.setMatricola(s.getMatricola());
+                sb.setLastname(s.getLastname());
                 sb.setClasse(s.getClasse());
+                sb.setMatricola(s.getMatricola());
                 allStudentsBean.add(sb);
             }
 
             allStudentsBean.sort((s1, s2) -> s1.getLastname().compareToIgnoreCase(s2.getLastname()));
             for (StudentBean u : allStudentsBean) {
 
-                List<Grades> temp = register.getMyGrades(u.getMatricola(), m, materia);
-                List<Absences> temp2 = register.getAbsences(u.getMatricola(), m);
+                List<Grades> temp3 = register.getMyGrades(u.getMatricola(), m, materia);
+                List<Absences> temp4 = register.getAbsences(u.getMatricola(), m);
 
-                if (temp != null) {
-                    List<Grades> grades = new ArrayList<>(temp);
+                if (temp3 != null) {
+                    List<Grades> grades = new ArrayList<>(temp3);
                     u.setGrades(grades);
                 }
-                if (temp2 != null) {
-                    List<Absences> absences = new ArrayList<>(temp2);
+                if (temp4 != null) {
+                    List<Absences> absences = new ArrayList<>(temp4);
                     u.setAbsences(absences);
                 }
 
