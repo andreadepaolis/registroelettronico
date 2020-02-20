@@ -144,7 +144,7 @@ class TestControllerHomeProfessor {
     }
 
     @Test
-    public void removehmw() throws ToastException {
+    void removehmw() throws ToastException {
         int result = 0;
         try {
             Connection con = myCreateConnection();
@@ -161,7 +161,7 @@ class TestControllerHomeProfessor {
     }
 
     @Test
-    public void saveAbsence() throws ToastException{
+    void saveAbsence() throws ToastException{
         int result = 0;
         try{
             Connection con = myCreateConnection();
