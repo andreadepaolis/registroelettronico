@@ -203,7 +203,7 @@ public class ControllerHomeStudent {
         Calendar cal = Calendar.getInstance();
         cal.setTime(s.getCurrentDate());
         if(i != 0)
-        cal.add(Calendar.DATE, i);
+            cal.add(Calendar.DATE, i);
         else
             cal.setTime(new Date());
         s.setCurrentDate(cal.getTime());

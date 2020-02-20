@@ -21,19 +21,21 @@ import java.util.List;
 
 class TestControllerHomeProfessor {
 
-    private Argument arg = new Argument(9999, "test selenium", "Geografia", "4B", 10);
+    private static final String geo = "Geografia";
+    private Argument arg = new Argument(9999, "test selenium", geo, "4B", 10);
     private int matricola = 1234;
     private Date d = new Date();
     private Grades g = new Grades(1234, "Matematica", 8, "orale", 9999, "Macchina", d);
-    private Homework hmw = new Homework(9999, "3B", "Geografia", "Compito 1", d);
+    private Homework hmw = new Homework(9999, "3B", geo, "Compito 1", d);
     private Absences a = new Absences(1234, "Assenza", d, 0);
     private String classe = "3B";
-    private String materia = "Geografia";
+    private String materia = geo;
+    private static final String ERR = "Error";
     private MonthFactory mf = new MonthFactory();
 
 
-    private Statement mycreateStatement() {
-
+    private Statement mycreateStatement() throws SQLException {
+        Statement stmt = null;
         try {
             String driver = "com.mysql.jdbc.Driver";
             Class.forName(driver);
@@ -43,9 +45,12 @@ class TestControllerHomeProfessor {
             String url = "jdbc:mysql://localhost:3306/project12?serverTimezone=Europe/Rome";
             Connection con = DriverManager.getConnection(url, userName, password);
 
-            return con.createStatement();
+            stmt =  con.createStatement();
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
+        }finally {
+
+            stmt.close();
         }
         return null;
     }
@@ -57,7 +62,7 @@ class TestControllerHomeProfessor {
 
         Statement stmt = mycreateStatement();
 
-        int result = ProfessorQuery.saveNewArg(stmt, 9999, "4B", "test slemium", "Geografia", 11);
+        int result = ProfessorQuery.saveNewArg(stmt, 9999, "4B", "test slemium", geo, 11);
         Assertions.assertTrue(result > 0);
     }
 
@@ -74,7 +79,7 @@ class TestControllerHomeProfessor {
         } catch (CustomSQLException | CustomException e) {
             throw new ToastException("Login Error",e.getMessage());
         } catch(Exception e){
-            throw new ToastException("Error",e.getMessage());
+            throw new ToastException(ERR,e.getMessage());
         }
 
     }
@@ -122,7 +127,7 @@ class TestControllerHomeProfessor {
             Assertions.assertTrue(register.getStudents().size() >0 );
 
         } catch (Exception e) {
-                throw new ToastException("Error","Test fails");
+                throw new ToastException(ERR,"Test fails");
         }
     }
     @Test
@@ -131,8 +136,8 @@ class TestControllerHomeProfessor {
         try {
             Statement stmt = mycreateStatement();
             result = ProfessorQuery.saveNewGrades(stmt, g);
-        } catch (CustomSQLException e) {
-            throw new ToastException("ERR", e.getMessage());
+        } catch ( SQLException e) {
+            throw new ToastException(ERR, e.getMessage());
         }
         Assertions.assertTrue(result > 0);
     }
@@ -144,8 +149,8 @@ class TestControllerHomeProfessor {
             Statement stmt = mycreateStatement();
             result = ProfessorQuery.deleteHomework(stmt, hmw.getDescription());
 
-        } catch (CustomSQLException e) {
-            throw new ToastException("ERR", e.getMessage());
+        } catch (SQLException e) {
+            throw new ToastException(ERR, e.getMessage());
         }
 
         Assertions.assertTrue(result > 0);
@@ -160,7 +165,7 @@ class TestControllerHomeProfessor {
             result = ProfessorQuery.saveNewAbsences(stmt, a);
 
         } catch (SQLException e) {
-            throw new ToastException("ERR", e.getMessage());
+            throw new ToastException(ERR, e.getMessage());
         }
 
         Assertions.assertTrue(result > 0);
@@ -173,7 +178,6 @@ class TestControllerHomeProfessor {
 
             String realPin;
             int id = 1234;
-            String ERR = "err";
             String pin = "00070";
 
             try {
@@ -190,13 +194,13 @@ class TestControllerHomeProfessor {
     @Test
      void getMonth() {
 
-        MonthFactory mf = new MonthFactory();
+        MonthFactory mof = new MonthFactory();
         Month m = null;
 
         int yearInt = Integer.parseInt("2020");
 
         int index = Integer.parseInt("4");
-        m = mf.createMonth(index, yearInt);
+        m = mof.createMonth(index, yearInt);
 
         Assertions.assertNotNull(m);
     }
@@ -208,8 +212,8 @@ class TestControllerHomeProfessor {
         int monthIndex = 2;
         int year = 2020;
         InputController inputCntl = new InputController();
-        Date d = inputCntl.generateDate(dayIndex, monthIndex, year);
-        int result = ProfessorDao.deleteAbsence(matricola, d);
+        Date date = inputCntl.generateDate(dayIndex, monthIndex, year);
+        int result = ProfessorDao.deleteAbsence(matricola, date);
         Assertions.assertTrue(result > 0);
 
     }

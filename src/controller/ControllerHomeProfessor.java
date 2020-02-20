@@ -377,7 +377,7 @@ public class ControllerHomeProfessor {
         Calendar cal = Calendar.getInstance();
         cal.setTime(p.getCurrentDate());
         if(amount != 0)
-        cal.add(Calendar.DATE, amount);
+            cal.add(Calendar.DATE, amount);
         else
             cal.setTime(new Date());
         p.setCurrentDate(cal.getTime());

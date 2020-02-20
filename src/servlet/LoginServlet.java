@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
 
 
             } else{
-                Toast t = new Toast("Error","invalid password or matricola",1);
+                Toast t = new Toast(ERROR,"invalid password or matricola",1);
                 request.setAttribute(TOAST,t);
                 rd.include(request, response);
             }
@@ -77,7 +77,7 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect("HomeProfessor.jsp");
 
                 } else {
-                    Toast t = new Toast("Error", "invalid password or matricola", 1);
+                    Toast t = new Toast(ERROR, "invalid password or matricola", 1);
                     request.setAttribute(TOAST, t);
                     rd.include(request,response);
 
@@ -89,7 +89,7 @@ public class LoginServlet extends HttpServlet {
 
             }
             catch (Exception e){
-                Toast t = new Toast("Error", e.getMessage(), 1);
+                Toast t = new Toast(ERROR, e.getMessage(), 1);
                 request.setAttribute(TOAST, t);
                 rd.forward(request, response);
 
