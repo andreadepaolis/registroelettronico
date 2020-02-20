@@ -1,0 +1,14 @@
+language: java
+
+jdk: 
+    -openjdk8
+
+addons:
+    sonarcloud:
+     organization: "andreadepaolis"
+     token:
+        secure: ""
+
+script:
+- ant
+- sonar-scanner
