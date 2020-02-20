@@ -33,7 +33,6 @@ class TestControllerHomeProfessor {
 
 
     private Connection myCreateConnection() throws SQLException {
-        Statement stmt = null;
         try {
             String driver = "com.mysql.jdbc.Driver";
             Class.forName(driver);
@@ -41,9 +40,8 @@ class TestControllerHomeProfessor {
             String password = "password";
             String userName = "root";
             String url = "jdbc:mysql://localhost:3306/project12?serverTimezone=Europe/Rome";
-            Connection con = DriverManager.getConnection(url, userName, password);
+            return DriverManager.getConnection(url, userName, password);
 
-            return con;
         } catch (Exception e) {
             return null;
         }
