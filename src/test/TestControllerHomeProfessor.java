@@ -88,12 +88,13 @@ class TestControllerHomeProfessor {
 
         Month m = mf.createMonth(2,2020);
         ProfessorRegister register = new ProfessorRegister();
-        register.setCurrentClass(classe);
         register.setCurrentMatter(materia);
         register.setCurrentMonth(m);
+        register.setCurrentClass(classe);
+
         try {
-            List<Student> allUserForClass = ProfessorDao.getClasse(classe);
             List<StudentBean> allStudentsBean = new ArrayList<>();
+            List<Student> allUserForClass = ProfessorDao.getClasse(classe);
             assert allUserForClass != null;
             for (Student s : allUserForClass) {
                 StudentBean sb = new StudentBean();
